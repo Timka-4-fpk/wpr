@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HabitWeb</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+<style>
+.theme-toggle-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  padding: 12px 14px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--card-bg);
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+.theme-toggle-btn:hover {
+  background-color: var(--accent);
+  color: #fff;
+}
+</style>
+</head>
+
+<body>
+
+  <header class="header">
+    <h1>HabitWeb</h1>
+    <nav class="nav">
+      <a href="index.html">Главная</a>
+      <a href="habits.html">Привычки</a>
+      <a href="stats.html">Статистика</a>
+      <a href="achievements.html">Достижения</a>
+      <a href="calendar.html">Календарь</a>
+      <a href="settings.html">Настройки</a>
+    </nav>
+  </header>
+  <main class="main-content">
+    <h2>Достижения</h2>
+<canvas id="totalTasksChart" width="400" height="200"></canvas>
+  </main>
+  <footer class="footer">© 2025 Гюлмамедов Тимур Назимович, 02172-ДБ</footer>
+  <script src="js/script.js"></script>
+
+
+<script src="js/main.js"></script>
+
+<!-- Theme toggle button -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById("totalTasksChart").getContext("2d");
+
+  const history = JSON.parse(localStorage.getItem("historyProgress")) || {};
+  const labels = Object.keys(history);
+  const data = Object.values(history);
+
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "% выполнения задач",
+        data: data,
+        fill: true,
+        tension: 0.3,
+        borderWidth: 2
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100
+        }
+      }
+    }
+  });
+</script>
+
+
+<script>
+  function toggleTheme() {
+    const currentTheme = document.body.classList.toggle("dark");
+    localStorage.setItem("darkTheme", currentTheme);
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("darkTheme") === "true") {
+      document.body.classList.add("dark");
+    }
+  });
+</script>
+
+<style>
+  body.dark {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+
+  body.dark a {
+    color: #90caf9;
+  }
+
+  body.dark .card,
+  body.dark .calendar-card {
+    background-color: #1e1e1e;
+  }
+
+  body.dark .progress-bar-container {
+    background: #444;
+  }
+</style>
+
+<!-- Theme toggle button -->
+<button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()">🌓</button>
+
+</body>
+</html>
